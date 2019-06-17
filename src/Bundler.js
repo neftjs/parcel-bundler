@@ -313,11 +313,7 @@ class Bundler extends EventEmitter {
         asset.replaceBundleNames(this.bundleNameMap);
       }
 
-      // Emit an HMR update if this is not the initial bundle.
       let bundlesChanged = numBundles !== this.bundleNameMap.size;
-      if (this.hmr && !isInitialBundle) {
-        this.hmr.emitUpdate(changedAssets, bundlesChanged);
-      }
 
       logger.progress(`Packaging...`);
 
@@ -326,6 +322,11 @@ class Bundler extends EventEmitter {
         this,
         bundlesChanged ? null : this.bundleHashes
       );
+
+      // Emit an HMR update if this is not the initial bundle.
+      if (this.hmr && !isInitialBundle) {
+        this.hmr.emitUpdate(changedAssets, bundlesChanged);
+      }
 
       // Unload any orphaned assets
       this.unloadOrphanedAssets();
