@@ -80,10 +80,12 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
     if (data.type === 'error') {
       console.error('[parcel] 🚨  ' + data.error.message + '\n' + data.error.stack);
 
-      removeErrorOverlay();
+      if (typeof document !== 'undefined') {
+        removeErrorOverlay();
 
-      var overlay = createErrorOverlay(data);
-      document.body.appendChild(overlay);
+        var overlay = createErrorOverlay(data);
+        document.body.appendChild(overlay);
+      }
     }
   };
 }
