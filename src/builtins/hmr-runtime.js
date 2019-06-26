@@ -22,6 +22,12 @@ function Module(moduleName) {
 module.bundle.Module = Module;
 var checkedAssets, assetsToAccept;
 
+if (typeof WebSocket === 'undefined') {
+  try {
+    WebSocket = require('@neft/websocket')
+  } catch (error) {}
+}
+
 var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = process.env.HMR_HOSTNAME || location.hostname;
