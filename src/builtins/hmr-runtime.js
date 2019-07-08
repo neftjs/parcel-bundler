@@ -64,7 +64,7 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
       });
 
       if (handled) {
-        console.clear();
+        console.log('[HMR] Updated changed files');
 
         data.assets.forEach(function (asset) {
           hmrApply(global.parcelRequire, asset);
