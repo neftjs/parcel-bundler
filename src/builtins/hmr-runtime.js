@@ -30,8 +30,16 @@ if (typeof WebSocket === 'undefined') {
 
 var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
-  var hostname = process.env.HMR_HOSTNAME || location.hostname;
-  var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
+  var hostname = process.env.HMR_HOSTNAME;
+  var protocol = 'ws';
+  if (typeof location !== 'undefined') {
+    if (!hostname) {
+      hostname = location.hostname;
+    }
+    if (location.protocol === 'https:') {
+      protocol = 'wss';
+    }
+  }
   var ws = new WebSocket(protocol + '://' + hostname + ':' + process.env.HMR_PORT + '/');
   ws.onmessage = function(event) {
     checkedAssets = {};
@@ -66,14 +74,22 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
           hmrAcceptRun(v[0], v[1]);
         });
       } else {
-        window.location.reload();
+        if (typeof location === 'object') {
+          location.reload();
+        } else {
+          console.log('[parcel] Reload needed');
+        }
       }
     }
 
     if (data.type === 'reload') {
       ws.close();
       ws.onclose = function () {
-        location.reload();
+        if (typeof location === 'object') {
+          location.reload();
+        } else {
+          console.log('[parcel] Reload needed');
+        }
       }
     }
 
