@@ -25,7 +25,9 @@ var checkedAssets, assetsToAccept;
 if (typeof WebSocket === 'undefined') {
   try {
     WebSocket = require('@neft/websocket')
-  } catch (error) {}
+  } catch (error) {
+    console.error('Cannot initialize HMR updates:', error)
+  }
 }
 
 var parent = module.bundle.parent;
@@ -77,7 +79,7 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
         if (typeof location === 'object') {
           location.reload();
         } else {
-          console.log('[parcel] Reload needed');
+          console.log('[HMR] Reload needed');
         }
       }
     }
@@ -88,19 +90,19 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
         if (typeof location === 'object') {
           location.reload();
         } else {
-          console.log('[parcel] Reload needed');
+          console.log('[HMR] Reload needed');
         }
       }
     }
 
     if (data.type === 'error-resolved') {
-      console.log('[parcel] ✨ Error resolved');
+      console.log('[HMR] ✨ Error resolved');
 
       removeErrorOverlay();
     }
 
     if (data.type === 'error') {
-      console.error('[parcel] 🚨  ' + data.error.message + '\n' + data.error.stack);
+      console.error('[HMR] 🚨  ' + data.error.message + '\n' + data.error.stack);
 
       if (typeof document !== 'undefined') {
         removeErrorOverlay();
